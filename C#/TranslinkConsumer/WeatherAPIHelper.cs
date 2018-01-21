@@ -20,7 +20,7 @@ namespace TranslinkConsumer
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://ds-ec2.scraperwiki.com/");
-            var response = client.GetAsync("tjhidvz/eboktibceox3kha/cgi-bin/forecast?date=" + time.ToString("yyyy-mm-dd") + "&time=" + time.ToShortTimeString() + "&mode=hourly").Result;
+            var response = client.GetAsync("tjhidvz/eboktibceox3kha/cgi-bin/forecast?date=" + time.ToString("yyyy-MM-dd") + "&time=" + time.ToString("HH:mm:ss") + "&mode=hourly").Result;
             JavaScriptSerializer js = new JavaScriptSerializer();
             JsonModel jsonModel = new JsonModel();
             if (response.IsSuccessStatusCode)

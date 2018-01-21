@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 using TranslinkModels;
 
 namespace TranslinkConsumer
@@ -54,6 +55,16 @@ namespace TranslinkConsumer
             {
                 result = GetStationByName("Lisburn");
                 result.scheduledTime = lisburnNearest;
+                DateTime expected = GetExpectedTrainTime("Lisburn");
+
+                if (expected != DateTime.MinValue)
+                {
+                    result.expectedTime = expected;
+                }
+                else
+                {
+                    result.expectedTime = result.scheduledTime;
+                }
 
                 return result;
             }
@@ -61,6 +72,17 @@ namespace TranslinkConsumer
             {
                 result = GetStationByName("Botanic");
                 result.scheduledTime = botanicNearest;
+                DateTime expected = GetExpectedTrainTime("Botanic");
+
+                if (expected != DateTime.MinValue)
+                {
+                    result.expectedTime = expected;
+                }
+                else
+                {
+                    result.expectedTime = result.scheduledTime;
+                }
+
                 return result;
             }
         }
@@ -101,6 +123,41 @@ namespace TranslinkConsumer
                 }
             }
             return result;
+        }
+
+
+        private DateTime GetExpectedTrainTime(string station)
+        {
+            string url = string.Empty;
+            if (station == "botanic")
+            {
+                url = "https://apis.opendatani.gov.uk/translink/3042A8.xml";
+                
+            }
+            else
+            {
+                url = "https://apis.opendatani.gov.uk/translink/3044C3.xml";
+            }
+
+            XmlTextReader reader = new XmlTextReader(url);
+            while (reader.Read())
+                {
+                    if (reader.Name == "ExpectedArriveTime")
+                    {
+                        string date = reader["time"];
+
+                        if (date != "On time")
+                        {
+                            return DateTime.Parse(date);
+                        }
+                        else
+                        {
+                            return DateTime.MinValue;
+                        }
+                    }
+                }
+
+            return DateTime.MinValue;
         }
     }
 }

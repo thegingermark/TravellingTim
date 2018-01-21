@@ -27,26 +27,6 @@ namespace Travel.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
-       public IHttpActionResult GetNextScheduledTrainTimeByStation(string stationName)
-        {
-            DateTime time = DateTime.Now;
-            StationModel station = helper.GetTrainAtNearestTime(stationName,time.ToString());
-            ResponseModel response = new ResponseModel();
-
-            if (station.name == null)
-            {
-                response.message = "Sorry, I could not find this station";
-                return Ok(response);
-            }
-
-            response.data = station;
-            response.error = false;
-
-
-            return Ok(response);
-        }
-
 
         [HttpGet]
         public IHttpActionResult GetNearestStationByLocation(LocationModel location)
