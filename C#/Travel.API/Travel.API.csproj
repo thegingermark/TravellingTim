@@ -178,10 +178,19 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TrainDataController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\WeatherController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\JsonModel.cs" />
+    <Compile Include="Models\LocationModel.cs" />
+    <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\StationTimeModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\WeatherModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -238,7 +247,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -252,6 +260,16 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TranslinkConsumer\TranslinkConsumer.csproj">
+      <Project>{2D7AAD70-A7D8-4706-BE9B-ED3C550D0D24}</Project>
+      <Name>TranslinkConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TranslinkModels\TranslinkModels.csproj">
+      <Project>{3D2C7DC4-40D2-4FD1-81E8-C969F8098210}</Project>
+      <Name>TranslinkModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
