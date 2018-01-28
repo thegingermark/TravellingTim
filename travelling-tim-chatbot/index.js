@@ -3,7 +3,7 @@ var builder = require('botbuilder');
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
-var botMiddleware = require('./middleware');
+
 
 const app = express();
 app.use('/', express.static('public'));
@@ -29,7 +29,7 @@ function requestStationScheduleTimeAt(session, station, traveldate) {
         if (!error && response.statusCode == 200) {
             var nexttrain = formatDateToTime(new Date(JSON.parse(body).data.scheduledTime));
             session.send('There is a train at ' + station + ' scheduled for ' + nexttrain + '.');
-            botMiddleware.delayResponseTyping(session, 2);
+            
             session.beginDialog('ReceiveNotifications');
         } else {
             console.log(error);
@@ -45,7 +45,7 @@ function requestStationSchedule(session, station) {
             console.log(JSON.parse(body).data);
             var nexttrain = formatDateToTime(new Date(JSON.parse(body).data.scheduledTime));
             session.send('The next train for ' + session.conversationData.station + ' is scheduled for ' + nexttrain + '.');
-            botMiddleware.delayResponseTyping(session, 2);
+            
             session.beginDialog('ReceiveNotifications');
         }
     })
@@ -71,13 +71,7 @@ var recognizer = new builder.LuisRecognizer(process.env.LUIS_MODEL_URL).onEnable
 });
 bot.recognizer(recognizer);
 
-//Add Send Typing for each message sent
-bot.use({
-    botbuilder: function (session, next) {
-        botMiddleware.delayResponseTyping(session, 2);
-        next();
-    }
-});
+bot.use(builder.Middleware.sendTyping())
 
 //Default dialog
 bot.dialog('/', function (session) {
@@ -126,10 +120,10 @@ bot.dialog('NextTrain', [
             session.conversationData.station = station.entity;
             next();
         } else if (getUsersDefaultStations(session, session.message.address)) {
-            botMiddleware.delayResponseTyping(session, 2);
+            
             session.beginDialog('GetLocation');
         } else {
-            botMiddleware.delayResponseTyping(session, 2);
+            
             sendMessageWithActions('Please specify a station or register to save default stations for next time.');
         }
     },
@@ -138,7 +132,7 @@ bot.dialog('NextTrain', [
         if (results && !session.conversationData.station) {
             session.conversationData.station = results.response.entity;
         }
-        botMiddleware.delayResponseTyping(session, 2);
+        
         requestStationSchedule(session, session.conversationData.station);
     },
     function (session, results) {
@@ -200,9 +194,9 @@ bot.dialog('NextTrainAt', [
 bot.dialog('Price', [
     function (session) {
         session.send('The price between Botanic Train Station and Lisburn Train Station is £4.00 for a single and £6.20 for a return.');
-        botMiddleware.delayResponseTyping(session, 2);
+        
         session.send('You can get 1/3 off on your return ticket after 9.30am, which would make it £4.10.');
-        botMiddleware.delayResponseTyping(session, 2);
+        
         builder.Prompts.choice(session, 'Would you like to purchase one now?', 'Yes|No', { listStyle: builder.ListStyle.button });
     },
     function (session, results) {

@@ -1,71 +1,44 @@
-# TravelllingTim
-Translink chatbot
+# Travelling Tim #
+A chatbot created for the Timon Hackathon in January 2018 - Uses open data from Translink NI to get scheduled train times and expected train times.
 
-1. Register user and gather basic info
-2. Give user basic tutorial
-	Suggested actions
-	Menu
-3. Preferences
-	setting default location
-	setting default destination
-	setting new location
-	setting new destination
-	preference changing
-		specific setting
-		rerun entire preference flow
-		give choice of preference to change
-4. Bot queries
-	When is next train
-		default results to provided "home" destinations
-		results specified destinations
-		Provide expected time AND scheduled time if possible
-		ask if user wants to track notifications for delays
-	Where's the nearest station/stop
-		Bot requests location/postcode/address
-		Bot requests destination from user
-		min/max radius
+## Pre-Requisites ##
+* Node & npm
+* Azure Bot Service - registration Subscription
+* Luis.ai account and application
+* ngrok
 
-	What price would a ticket be
-		single
-		return
-		weekly
-		monthly
-		annual
-		handle age & time of day	 
-5. Notifications
-	Notification settings
-		Time windows for notifications
-		Enable/disable specific notifications
-	Weather based notifications
-		Rain - train may be full
-		Train encouragements based on heavy traffic/road accidents
-	Event based notifications
-		Popular gigs
-	Delay notifications
-		
-	Next train notifications
+## How to set up ##
+* Run the following command:
+```
+ngrok http 3979
+```
 
-Things to consider
+* Copy the https link generated.
 
-1. chatbot personality
-	gender unimportant 
-	needs a personality
-	remain gender neutral
-	should have a name - Translink Tim, alliteration is cool
-	avoid stereotypes
-2. Demo on web or on facebook?
+* For info on how to register a chatbot on Azure Bot Service, read here: `https://docs.microsoft.com/en-us/bot-framework/bot-service-quickstart-registration`
+This is necessary for the chatbot to function.
 
-3. Use firebase for notifications?
-	
-4. Use translink API, use our own API - what does this need to do?
+* Add the ngrok link as the chatbot's messaging endpoint on Azure Bot Service
 
-Tech stack
-	Create git repo
-	Initial commit with files we are gonna use
-	for js - weird line ending issue can happen
-	Hiroku for hosting bot
-	Luis for natural language processing
-	DB MySQl - use one.com hosting?
-	Use AWS for any webAPI implementation
+* Once you've registered a chatbot on azure, create a .env file in the root directory and add the following key references - set them to the app id and app password from the previous step.
+```
+MICROSOFT_APP_ID=
+MICROSOFT_APP_PASSWORD=
+LUIS_MODEL_URL=
+```
 
-Potential issue
+* Next add a DirectLine channel to your chatbot on Azure Bot Service, instructions found here:
+`https://docs.microsoft.com/en-us/bot-framework/bot-service-channel-connect-directline`
+
+* Using the secret key generated for the DirectLine channel, add this to `public/js/script.js` where the secret key reference is mentioned
+
+* In terminal, cd to the root directory of this repository and run the following commands:
+```
+npm install -s botbuilder
+npm install -s express
+npm install -s body-parser
+npm install -s request
+npm install -s dotenv
+```
+
+* In a browser, navigate to `localhost:3979` and say `hi` to travelling tim
