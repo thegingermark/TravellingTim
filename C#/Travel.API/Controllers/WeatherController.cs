@@ -19,7 +19,7 @@ namespace Travel.API.Controllers
 
             JsonModel result = weatherAPIHelper.GetCurrentWeather(datetime);
             response.data = result.data;
-            response.error = true;
+            response.error = false;
             response.message = null;
 
             return Ok(response);

@@ -29,9 +29,9 @@ namespace Travel.API.Controllers
 
 
         [HttpGet]
-        public IHttpActionResult GetNearestStationByLocation(LocationModel location)
+        public IHttpActionResult GetNearestStationByLocation(long latitude, long longitude)
         {
-            StationModel station = helper.GetNearestStation(location.latitude, location.longitude);
+            StationModel station = helper.GetNearestStation(latitude, longitude);
             ResponseModel response = new ResponseModel();
             response.data = station;
             return Ok(response);
@@ -44,7 +44,7 @@ namespace Travel.API.Controllers
             DateTime time = DateTime.Now;
             if (!String.IsNullOrEmpty(datetime))
             {
-               time = Convert.ToDateTime(datetime); 
+               time = DateTime.ParseExact(datetime, "dd/M/yyyy HH:mm:s", null); 
             }
 
             StationModel station = helper.GetTrainAtNearestTime(stationName, time.ToString());

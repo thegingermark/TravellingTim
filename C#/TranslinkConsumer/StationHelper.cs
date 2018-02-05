@@ -35,7 +35,7 @@ namespace TranslinkConsumer
             StationModel result = new StationModel();
             if (!string.IsNullOrEmpty(station))
             {
-                all = all.Where(c => c.name.Contains(station)).ToList();
+                all = all.Where(c => c.name.ToLower().Contains(station)).ToList();
             }
 
             DateTime startTime = DateTime.Now;
@@ -51,7 +51,7 @@ namespace TranslinkConsumer
             DateTime lisburnNearest =  GetNearestTimeValue(startTime, lisburnTimes);
             DateTime botanicNearest = GetNearestTimeValue(startTime, botanicTime);
 
-            if (lisburnNearest < botanicNearest || station.Contains("Lisburn"))
+            if (lisburnNearest < botanicNearest || station.ToLower().Contains("lisburn"))
             {
                 result = GetStationByName("Lisburn");
                 result.scheduledTime = lisburnNearest;
@@ -116,7 +116,7 @@ namespace TranslinkConsumer
 
             foreach (var item in list)
             {
-                if ((item.Ticks - time.Ticks) < difference)
+                if (item.Ticks > time.Ticks &&(item.Ticks - time.Ticks) < difference)
                 {
                     difference = item.Ticks - time.Ticks;
                     result = item;
@@ -148,7 +148,7 @@ namespace TranslinkConsumer
 
                         if (date != "On time")
                         {
-                            return DateTime.Parse(date);
+                            return DateTime.ParseExact(date, "HHmm", null);
                         }
                         else
                         {
