@@ -26,6 +26,15 @@ MICROSOFT_APP_ID=
 MICROSOFT_APP_PASSWORD=
 LUIS_MODEL_URL=
 ```
+* You will need to create a new project on `luis.ai` and train it to respond to the following intents:
+```
+'Greeting' - e.g. 'Hello', 'Hi'
+'NextTrain' - e.g. 'when is the next train from Belfast Central?'
+'Price' - e.g. 'How much is a train ticket from Belfast Central to Lisburn?'
+'Goodbye' - e.g. 'Goodbye', 'Cya'
+'Form' - e.g. 'What's up?', 'How are you?'
+```
+Publish the model and use the endpoint in the previous step for the variable `LUIS_MODEL_URL`
 
 * Next add a DirectLine channel to your chatbot on Azure Bot Service, instructions found here:
 `https://docs.microsoft.com/en-us/bot-framework/bot-service-channel-connect-directline`
